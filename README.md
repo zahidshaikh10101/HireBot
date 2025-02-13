@@ -137,7 +137,7 @@ streamlit run app.py
 ```
 
 ### Screenshot
-<img width="907" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/blob/1b5a6c27d1b204c5675296cc0a7091569210b442/images/RP%20-%201.png"> 
+<img width="507" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/blob/1b5a6c27d1b204c5675296cc0a7091569210b442/images/RP%20-%201.png"> 
 <img width="907" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/blob/1b5a6c27d1b204c5675296cc0a7091569210b442/images/RP%20-%202.png"> 
 <img width="907" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/blob/1b5a6c27d1b204c5675296cc0a7091569210b442/images/RP%20-%203.png"> 
 <img width="907" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/blob/3cd925e9f7210dcc85c33ee91503f60631174a71/images/JS%20-1.png"> 
