@@ -1,7 +1,5 @@
 # HireBot
 
-## Function Descriptions
-
 ### Resume Parsing Functions:
 
 - **extract\_text\_from\_pdf(pdf\_file):** Extracts text content from a given PDF file by reading its bytes and using a text extraction function.
@@ -139,7 +137,9 @@ streamlit run app.py
 ```
 
 ### Screenshot
-<img width="1007" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/images/RP - 1.png">
+<img width="1007" alt="app" src="[https://github.com/zahidshaikh10101/Hirebot/images/RP - 1.png](https://github.com/zahidshaikh10101/Hirebot/images/RP - 1.png)"> 
+<img width="1007" alt="app" src="[https://github.com/zahidshaikh10101/Hirebot/images/RP - 2.png](https://github.com/zahidshaikh10101/Hirebot/images/RP - 2.png)"> 
+<img width="1007" alt="app" src="[https://github.com/zahidshaikh10101/Hirebot/images/RP - 3.png](https://github.com/zahidshaikh10101/Hirebot/images/RP - 3.png)"> 
 
 
 
