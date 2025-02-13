@@ -138,6 +138,10 @@ To start the Streamlit app, run:
 streamlit run app.py
 ```
 
+### Screenshot
+images/RP - 1.png
+
+
 ### API Keys Setup
 
 - Ensure you have API keys configured for job search functionalities.
