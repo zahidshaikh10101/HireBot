@@ -39,7 +39,7 @@ Match Percentage = (Skills Score × 0.40) + (Experience Score × 0.30) + (Educat
 
 This ensures that skills and experience have the most weight, while education and keyword relevance contribute to the final match percentage.
 
-## Resume Analyzer Tool
+## Resume Analyzer Features
 
 A Streamlit-based resume analysis tool that allows users to upload a PDF resume and extract key information, providing insights into the candidate’s personal details, education, professional experience, skills, strengths, and weaknesses.
 
@@ -73,7 +73,7 @@ A Streamlit-based resume analysis tool that allows users to upload a PDF resume 
 
 This interactive resume analyzer streamlines resume processing and provides insights for recruiters and job seekers. 🚀
 
-## Job Search Feature (HireBot)
+## Job Search Feature
 
 A Streamlit web app feature that allows users to upload a resume (PDF), extract job-related details (role, experience, skills), and search for matching job postings via an API.
 
