@@ -1,3 +1,5 @@
+spacy
+en-core-web-sm
 streamlit
 nltk
 spacy
