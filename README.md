@@ -139,7 +139,8 @@ streamlit run app.py
 ```
 
 ### Screenshot
-images/RP - 1.png
+<img width="1007" alt="app" src="https://github.com/zahidshaikh10101/Hirebot/images/RP - 1.png">
+
 
 
 ### API Keys Setup
