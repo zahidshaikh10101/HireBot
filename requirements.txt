@@ -1,0 +1,13 @@
+streamlit
+nltk
+spacy
+pdfminer.six
+google-generativeai
+pandas
+streamlit-tags
+beautifulsoup4
+pillow
+pymysql
+plotly
+requests
+uuid
