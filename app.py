@@ -156,7 +156,7 @@ def extract_social(resume_text):
 
 def generate_response(prompt):
     """Generate a response from the generative AI model with retry logic."""
-    genai.configure(api_key="AIzaSyBA-ex8tdjSqR_SATz2a7wP2g6zKcM0700")
+    genai.configure(api_key="") # Add your api key over here
     generation_config = {
         "temperature": 0.7,
         "top_p": 0.95,
@@ -423,8 +423,8 @@ def run():
                 }
 
                 headers = {
-                    "x-rapidapi-key": "702a4be6f6msh4fbca242aae430ap194bcfjsn87401b780075",
-                    "x-rapidapi-host": "jobs-api14.p.rapidapi.com"
+                    "x-rapidapi-key": "", # Add your creds
+                    "x-rapidapi-host": ""
                 }
 
                 # API Call
