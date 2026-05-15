@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hirebot — AI Career Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   NEURAL NOIR — Custom Theme
+   Base: #080B0F  Surface: #0D1117  Card: #111820
+   Accent1: #00E5FF (cyan)   Accent2: #FFB830 (amber)
+   Text: #E8EEF4             Muted: #4A5568
+═══════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #080B0F;
+  --surface:   #0D1117;
+  --card:      #111820;
+  --card2:     #151D28;
+  --border:    #1E2D3D;
+  --border2:   #243346;
+  --cyan:      #00E5FF;
+  --cyan-dim:  #00B8CC;
+  --cyan-glow: rgba(0,229,255,0.12);
+  --amber:     #FFB830;
+  --amber-dim: #CC9020;
+  --amber-glow:rgba(255,184,48,0.10);
+  --green:     #00FF94;
+  --red:       #FF4D6D;
+  --text:      #E8EEF4;
+  --text2:     #8899AA;
+  --text3:     #4A5568;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'JetBrains Mono', monospace;
+  --font-serif:'Fraunces', serif;
+  --r:         12px;
+  --r-lg:      18px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── Scanline texture overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── Ambient background orbs ── */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-drift 20s ease-in-out infinite;
+}
+.bg-orb-1 { width: 600px; height: 600px; background: rgba(0,229,255,0.04); top: -200px; right: -200px; }
+.bg-orb-2 { width: 500px; height: 500px; background: rgba(255,184,48,0.04); bottom: -150px; left: -150px; animation-delay: -10s; }
+.bg-orb-3 { width: 300px; height: 300px; background: rgba(0,255,148,0.03); top: 40%; left: 30%; animation-delay: -5s; }
+
+@keyframes orb-drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(30px,-20px) scale(1.05); }
+  66% { transform: translate(-20px,30px) scale(0.95); }
+}
+
+/* ── Grid line background ── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ════════ LAYOUT ════════ */
+.app { position: relative; z-index: 1; }
+
+/* ════════ NAVBAR ════════ */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,11,15,0.8);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+.logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--cyan), var(--amber));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.logo-text { color: var(--text); }
+.logo-text span { color: var(--cyan); }
+
+.nav-badge {
+  font-size: 10px;
+  font-family: var(--font-body);
+  background: var(--cyan-glow);
+  border: 1px solid rgba(0,229,255,0.25);
+  color: var(--cyan);
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+}
+
+/* ════════ HERO ════════ */
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 40px 60px;
+  text-align: center;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--amber);
+  background: var(--amber-glow);
+  border: 1px solid rgba(255,184,48,0.2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+}
+.hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); animation: pulse 2s infinite; }
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(1.4); }
+}
+
+.hero h1 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+}
+
+.hero h1 .line1 { color: var(--text); display: block; }
+.hero h1 .line2 {
+  display: block;
+  background: linear-gradient(90deg, var(--cyan), var(--amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.8;
+}
+
+/* ════════ UPLOAD ZONE ════════ */
+.upload-section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: var(--r-lg);
+  padding: 56px 40px;
+  text-align: center;
+  background: var(--card);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, var(--cyan-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--cyan);
+  background: #0D1820;
+}
+.upload-zone:hover::before, .upload-zone.drag-over::before { opacity: 1; }
+
+.upload-icon {
+  font-size: 52px;
+  display: block;
+  margin-bottom: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.upload-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.upload-sub {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--cyan), #0099BB);
+  color: #000;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,229,255,0.3);
+}
+
+.file-types {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.file-chip {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+}
+
+#file-input { display: none; }
+
+/* ════════ ANALYZE BUTTON ════════ */
+.analyze-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--amber), var(--amber-dim));
+  border: none;
+  border-radius: var(--r);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.03em;
+}
+.analyze-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255,184,48,0.35);
+}
+.analyze-btn.visible { display: flex; }
+
+/* File selected state */
+.file-selected-info {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0,229,255,0.06);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  margin-top: 16px;
+}
+.file-selected-info.visible { display: flex; }
+.file-icon-sm { font-size: 24px; }
+.file-name-text { font-size: 13px; color: var(--cyan); flex: 1; }
+.file-size-text { font-size: 11px; color: var(--text3); }
+.remove-file { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; transition: color 0.2s; }
+.remove-file:hover { color: var(--red); }
+
+/* ════════ LOADING ════════ */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8,11,15,0.92);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+  backdrop-filter: blur(10px);
+}
+.loading-overlay.active { display: flex; }
+
+.loader-ring {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  border-top-color: var(--cyan);
+  border-right-color: var(--amber);
+  animation: spin 1.2s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.loading-sub {
+  font-size: 12px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+.loading-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 260px;
+}
+.loading-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text3);
+  transition: color 0.3s;
+}
+.loading-step.active { color: var(--cyan); }
+.loading-step.done { color: var(--green); }
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--text3);
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+.loading-step.active .step-dot { background: var(--cyan); animation: pulse 1s infinite; }
+.loading-step.done .step-dot { background: var(--green); }
+
+/* ════════ RESULTS ════════ */
+.results-section {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+  animation: fadeUp 0.6s ease;
+}
+.results-section.visible { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Results header ── */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.results-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+}
+.results-title span { color: var(--cyan); }
+
+.results-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.new-analysis-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.new-analysis-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* ── Profile card ── */
+.profile-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--cyan), var(--amber));
+}
+
+.avatar {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan-glow), var(--amber-glow));
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  flex-shrink: 0;
+}
+.profile-info { flex: 1; }
+.profile-name {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.profile-contacts {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.contact-item span { color: var(--text3); }
+
+.exp-badge {
+  background: linear-gradient(135deg, rgba(0,229,255,0.1), rgba(255,184,48,0.1));
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: 16px 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.exp-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 36px;
+  background: linear-gradient(135deg, var(--cyan), var(--amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.exp-label { font-size: 10px; color: var(--text3); letter-spacing: 0.1em; margin-top: 4px; }
+
+/* ── Grid layout ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+@media(max-width:800px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  nav { padding: 16px 20px; }
+  .hero, .upload-section, .results-section { padding-left: 20px; padding-right: 20px; }
+  .profile-card { flex-direction: column; align-items: flex-start; }
+}
+
+/* ── Section cards ── */
+.data-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.015);
+}
+.card-head-icon { font-size: 18px; }
+.card-head-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.card-count {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.card-body { padding: 20px; }
+
+/* ── Experience items ── */
+.exp-item {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 22px;
+}
+.exp-item:last-child { margin-bottom: 0; }
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px;
+  bottom: -16px;
+  width: 1px;
+  background: var(--border2);
+}
+.exp-item:last-child::before { display: none; }
+.exp-dot {
+  position: absolute;
+  left: -4px; top: 4px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--cyan);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 8px var(--cyan);
+}
+.exp-role {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.exp-company { font-size: 12px; color: var(--cyan); margin-bottom: 4px; }
+.exp-dates {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--border);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+/* ── Education items ── */
+.edu-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+  align-items: flex-start;
+}
+.edu-item:last-child { margin-bottom: 0; }
+.edu-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--amber-glow);
+  border: 1px solid rgba(255,184,48,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.edu-info { flex: 1; }
+.edu-degree {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.edu-inst { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+.edu-years { font-size: 11px; color: var(--amber); }
+
+/* ── Skills ── */
+.skill-category { margin-bottom: 18px; }
+.skill-category:last-child { margin-bottom: 0; }
+.skill-cat-name {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.skill-tag {
+  font-size: 11px;
+  padding: 5px 11px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  background: var(--card2);
+  transition: all 0.2s;
+  cursor: default;
+}
+.skill-tag:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: var(--cyan-glow);
+}
+
+/* ── Links ── */
+.links-grid { display: flex; flex-direction: column; gap: 10px; }
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  background: var(--card2);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.link-item:hover {
+  border-color: var(--cyan);
+  background: var(--cyan-glow);
+}
+.link-platform-icon { font-size: 20px; }
+.link-details { flex: 1; overflow: hidden; }
+.link-platform { font-size: 11px; color: var(--text3); letter-spacing: 0.08em; }
+.link-url { font-size: 12px; color: var(--cyan); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.link-arrow { color: var(--text3); font-size: 14px; }
+.link-empty { font-size: 12px; color: var(--text3); text-align: center; padding: 20px 0; }
+
+/* ── JSON raw toggle ── */
+.json-section {
+  margin-top: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.json-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: var(--font-body);
+  font-size: 12px;
+  transition: color 0.2s;
+}
+.json-toggle:hover { color: var(--cyan); }
+.json-toggle-left { display: flex; align-items: center; gap: 10px; }
+.json-chevron { transition: transform 0.3s; font-size: 16px; }
+.json-chevron.open { transform: rotate(180deg); }
+.json-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.json-body.open { display: block; }
+.json-body::-webkit-scrollbar { width: 6px; }
+.json-body::-webkit-scrollbar-track { background: transparent; }
+.json-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+pre.json-raw {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text2);
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.7;
+}
+.json-key { color: var(--cyan); }
+.json-str { color: var(--amber); }
+.json-num { color: var(--green); }
+.json-null { color: var(--text3); }
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text3);
+  font-size: 12px;
+}
+.empty-state .empty-icon { font-size: 32px; margin-bottom: 8px; }
+
+/* ── Smooth scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s ease forwards;
+}
+.reveal:nth-child(1) { animation-delay: 0.05s; }
+.reveal:nth-child(2) { animation-delay: 0.12s; }
+.reveal:nth-child(3) { animation-delay: 0.19s; }
+.reveal:nth-child(4) { animation-delay: 0.26s; }
+.reveal:nth-child(5) { animation-delay: 0.33s; }
+.reveal:nth-child(6) { animation-delay: 0.40s; }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 30px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+}
+footer span { color: var(--cyan); }
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+
+<!-- Background elements -->
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="loader-ring"></div>
+  <div class="loading-text">🤖 Analyzing Resume...</div>
+  <div class="loading-steps" id="loading-steps">
+    <div class="loading-step" id="step-1"><div class="step-dot"></div> Extracting text content</div>
+    <div class="loading-step" id="step-2"><div class="step-dot"></div> Parsing personal details</div>
+    <div class="loading-step" id="step-3"><div class="step-dot"></div> Mapping experience timeline</div>
+    <div class="loading-step" id="step-4"><div class="step-dot"></div> Detecting skills & education</div>
+    <div class="loading-step" id="step-5"><div class="step-dot"></div> Extracting professional links</div>
+  </div>
+  <div class="loading-sub">HIREBOT NEURAL ENGINE v1.0</div>
+</div>
+
+<div class="app">
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-text">Hire<span>bot</span></div>
+    </div>
+    <div class="nav-badge">⚡ AI CAREER INTELLIGENCE</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero-section">
+    <div class="hero-tag">STEP 1 OF 6 — PROFILE EXTRACTION</div>
+    <h1>
+      <span class="line1">Your Resume,</span>
+      <span class="line2">Decoded by AI</span>
+    </h1>
+    <p class="hero-sub">
+      Drop your resume and watch Hirebot's neural engine extract every detail — 
+      name, experience, skills, education & more. ✨
+    </p>
+  </section>
+
+  <!-- UPLOAD -->
+  <section class="upload-section" id="upload-section">
+    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <span class="upload-icon">📄</span>
+      <div class="upload-title">Drop your resume here</div>
+      <div class="upload-sub">
+        Supports PDF and DOCX formats<br>
+        Max size: 10MB
+      </div>
+      <button class="upload-btn" onclick="event.stopPropagation(); document.getElementById('file-input').click()">
+        📂 Browse Files
+      </button>
+      <div class="file-types">
+        <span class="file-chip">PDF</span>
+        <span class="file-chip">DOCX</span>
+        <span class="file-chip">DOC</span>
+      </div>
+    </div>
+
+    <input type="file" id="file-input" accept=".pdf,.docx,.doc">
+
+    <!-- File selected info -->
+    <div class="file-selected-info" id="file-info">
+      <div class="file-icon-sm">📋</div>
+      <div style="flex:1">
+        <div class="file-name-text" id="file-name-display">resume.pdf</div>
+        <div class="file-size-text" id="file-size-display">2.4 MB</div>
+      </div>
+      <button class="remove-file" onclick="clearFile()" title="Remove file">✕</button>
+    </div>
+
+    <button class="analyze-btn" id="analyze-btn" onclick="analyzeResume()">
+      🚀 Analyze My Resume
+    </button>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results-section" id="results-section">
+    <div class="results-header">
+      <div class="results-title">Profile <span>Extracted</span> ✅</div>
+      <div class="results-meta">
+        <button class="new-analysis-btn" onclick="resetApp()">
+          🔄 New Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Profile summary card -->
+    <div class="profile-card reveal" id="profile-card">
+      <div class="avatar" id="avatar-emoji">🧑‍💼</div>
+      <div class="profile-info">
+        <div class="profile-name" id="result-name">—</div>
+        <div class="profile-contacts">
+          <div class="contact-item" id="contact-email" style="display:none">
+            📧 <span id="result-email"></span>
+          </div>
+          <div class="contact-item" id="contact-phone" style="display:none">
+            📱 <span id="result-phone"></span>
+          </div>
+          <div class="contact-item" id="contact-location" style="display:none">
+            📍 <span id="result-location"></span>
+          </div>
+        </div>
+      </div>
+      <div class="exp-badge">
+        <div class="exp-num" id="result-exp-num">—</div>
+        <div class="exp-label">YRS EXP</div>
+      </div>
+    </div>
+
+    <!-- Experience + Education -->
+    <div class="grid-2">
+      <!-- Experience -->
+      <div class="data-card reveal" id="exp-card">
+        <div class="card-head">
+          <span class="card-head-icon">💼</span>
+          <span class="card-head-title">Work Experience</span>
+          <span class="card-count" id="exp-count">0 roles</span>
+        </div>
+        <div class="card-body" id="exp-body">
+          <div class="empty-state"><div class="empty-icon">🔍</div>No experience found</div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="data-card reveal" id="edu-card">
+        <div class="card-head">
+          <span class="card-head-icon">🎓</span>
+          <span class="card-head-title">Education</span>
+          <span class="card-count" id="edu-count">0 entries</span>
+        </div>
+        <div class="card-body" id="edu-body">
+          <div class="empty-state"><div class="empty-icon">🔍</div>No education found</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills (full width) -->
+    <div class="data-card reveal" id="skills-card" style="margin-bottom:20px">
+      <div class="card-head">
+        <span class="card-head-icon">⚡</span>
+        <span class="card-head-title">Skills & Competencies</span>
+        <span class="card-count" id="skills-count">0 skills</span>
+      </div>
+      <div class="card-body" id="skills-body">
+        <div class="empty-state"><div class="empty-icon">🔍</div>No skills found</div>
+      </div>
+    </div>
+
+    <!-- Links -->
+    <div class="data-card reveal" style="margin-bottom:20px">
+      <div class="card-head">
+        <span class="card-head-icon">🔗</span>
+        <span class="card-head-title">Professional Links</span>
+      </div>
+      <div class="card-body" id="links-body">
+        <div class="links-grid" id="links-grid"></div>
+      </div>
+    </div>
+
+    <!-- Raw JSON -->
+    <div class="json-section reveal">
+      <button class="json-toggle" onclick="toggleJson(this)">
+        <div class="json-toggle-left">
+          <span>🧾</span>
+          <span>Raw JSON Output</span>
+        </div>
+        <span class="json-chevron" id="json-chevron">▼</span>
+      </button>
+      <div class="json-body" id="json-body">
+        <pre class="json-raw" id="json-raw"></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Built with ❤️ by <span>Hirebot</span> — AI Career Intelligence Platform &nbsp;·&nbsp; Step 1 of 6 🚀
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  FILE HANDLING
+// ═══════════════════════════════════════
+let selectedFile = null;
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+
+dropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) handleFile(e.target.files[0]);
+});
+
+function handleFile(file) {
+  const allowed = ['application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/msword'];
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['pdf','docx','doc'].includes(ext)) {
+    alert('⚠️ Please upload a PDF or DOCX file.');
+    return;
+  }
+  selectedFile = file;
+  document.getElementById('file-name-display').textContent = file.name;
+  document.getElementById('file-size-display').textContent = formatSize(file.size);
+  document.getElementById('file-info').classList.add('visible');
+  document.getElementById('analyze-btn').classList.add('visible');
+  dropZone.style.borderColor = 'var(--cyan)';
+}
+
+function clearFile() {
+  selectedFile = null;
+  fileInput.value = '';
+  document.getElementById('file-info').classList.remove('visible');
+  document.getElementById('analyze-btn').classList.remove('visible');
+  dropZone.style.borderColor = '';
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+
+// ═══════════════════════════════════════
+//  ANALYZE — calls your Python backend
+//  (mocked with sample data if no backend)
+// ═══════════════════════════════════════
+async function analyzeResume() {
+  if (!selectedFile) return;
+  showLoading();
+
+  try {
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    // ── Try real backend first ──
+    // Change this URL to your actual FastAPI / Flask endpoint
+    const BACKEND_URL = 'http://localhost:8000/analyze';
+
+    let data;
+    try {
+      const res = await fetch(BACKEND_URL, { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Backend error');
+      data = await res.json();
+    } catch {
+      // ── Fallback: rich sample data so the UI is fully demoable ──
+      await sleep(3200);
+      data = getSampleData();
+    }
+
+    hideLoading();
+    renderResults(data);
+  } catch (err) {
+    hideLoading();
+    alert('❌ Analysis failed: ' + err.message);
+  }
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ═══════════════════════════════════════
+//  LOADING STEPS ANIMATION
+// ═══════════════════════════════════════
+let loadingTimer = null;
+
+function showLoading() {
+  document.getElementById('loading').classList.add('active');
+  const steps = ['step-1','step-2','step-3','step-4','step-5'];
+  steps.forEach(s => {
+    document.getElementById(s).className = 'loading-step';
+  });
+  let i = 0;
+  loadingTimer = setInterval(() => {
+    if (i > 0) document.getElementById(steps[i-1]).className = 'loading-step done';
+    if (i < steps.length) {
+      document.getElementById(steps[i]).className = 'loading-step active';
+      i++;
+    } else {
+      clearInterval(loadingTimer);
+    }
+  }, 600);
+}
+
+function hideLoading() {
+  clearInterval(loadingTimer);
+  document.getElementById('loading').classList.remove('active');
+}
+
+// ═══════════════════════════════════════
+//  RENDER RESULTS
+// ═══════════════════════════════════════
+function renderResults(data) {
+  // Profile card
+  document.getElementById('result-name').textContent = data.name || 'Unknown Candidate';
+
+  if (data.email) {
+    document.getElementById('result-email').textContent = data.email;
+    document.getElementById('contact-email').style.display = 'flex';
+  }
+  if (data.phone) {
+    document.getElementById('result-phone').textContent = data.phone;
+    document.getElementById('contact-phone').style.display = 'flex';
+  }
+  if (data.location) {
+    document.getElementById('result-location').textContent = data.location;
+    document.getElementById('contact-location').style.display = 'flex';
+  }
+
+  // Experience years
+  const expYears = data.total_experience || computeExpYears(data.experience);
+  document.getElementById('result-exp-num').textContent = expYears !== null ? expYears : '—';
+
+  // Avatar based on name initial
+  const initials = (data.name || 'U').charAt(0).toUpperCase();
+  const avatarEmojis = ['🧑‍💼','👨‍💻','👩‍💼','🧑‍🎓','👨‍🔬','👩‍💻'];
+  document.getElementById('avatar-emoji').textContent = avatarEmojis[Math.floor(Math.random()*avatarEmojis.length)];
+
+  // Experience
+  renderExperience(data.experience || []);
+
+  // Education
+  renderEducation(data.education || []);
+
+  // Skills
+  renderSkills(data.skills || {});
+
+  // Links
+  renderLinks(data);
+
+  // Raw JSON
+  document.getElementById('json-raw').innerHTML = syntaxHighlight(JSON.stringify(data, null, 2));
+
+  // Show results, hide upload
+  document.getElementById('upload-section').style.display = 'none';
+  document.getElementById('hero-section').style.display = 'none';
+  document.getElementById('results-section').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function computeExpYears(expList) {
+  if (!expList || expList.length === 0) return null;
+  let total = 0;
+  const now = new Date().getFullYear();
+  expList.forEach(e => {
+    const s = parseInt(e.start_year);
+    const en = e.end_year ? parseInt(e.end_year) : now;
+    if (!isNaN(s) && !isNaN(en)) total += Math.max(0, en - s);
+  });
+  return total || null;
+}
+
+function renderExperience(expList) {
+  const body = document.getElementById('exp-body');
+  const count = document.getElementById('exp-count');
+  count.textContent = expList.length + (expList.length === 1 ? ' role' : ' roles');
+
+  if (expList.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>No experience found</div>';
+    return;
+  }
+
+  body.innerHTML = expList.map(e => `
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-role">${e.position || 'Unknown Role'}</div>
+      ${e.company ? `<div class="exp-company">🏢 ${e.company}</div>` : ''}
+      <div class="exp-dates">📅 ${e.start_date || e.start_year || '?'} → ${e.end_date || e.end_year || 'Present'}</div>
+    </div>
+  `).join('');
+}
+
+function renderEducation(eduList) {
+  const body = document.getElementById('edu-body');
+  const count = document.getElementById('edu-count');
+  count.textContent = eduList.length + (eduList.length === 1 ? ' entry' : ' entries');
+
+  if (eduList.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>No education found</div>';
+    return;
+  }
+
+  const degreeIcons = { 'bachelor': '🎓', 'master': '🎓', 'phd': '🔬', 'mba': '💼', 'b.e': '⚙️', 'm.e': '⚙️', 'b.sc': '🔬', 'm.sc': '🔬', 'diploma': '📜' };
+  function getEduIcon(degree) {
+    if (!degree) return '🎓';
+    const low = degree.toLowerCase();
+    for (const [k,v] of Object.entries(degreeIcons)) if (low.includes(k)) return v;
+    return '🎓';
+  }
+
+  body.innerHTML = eduList.map(e => `
+    <div class="edu-item">
+      <div class="edu-icon">${getEduIcon(e.degree)}</div>
+      <div class="edu-info">
+        <div class="edu-degree">${e.degree || 'Degree'}</div>
+        ${e.institution ? `<div class="edu-inst">🏫 ${e.institution}</div>` : ''}
+        ${(e.start_year || e.end_year) ? `<div class="edu-years">📅 ${e.start_year || '?'} – ${e.end_year || 'Present'}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSkills(skillsObj) {
+  const body = document.getElementById('skills-body');
+  const count = document.getElementById('skills-count');
+
+  const entries = Object.entries(skillsObj);
+  if (entries.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>No skills found</div>';
+    count.textContent = '0 skills';
+    return;
+  }
+
+  const total = entries.reduce((acc, [,v]) => acc + v.length, 0);
+  count.textContent = total + ' skills';
+
+  const catEmojis = {
+    'languages': '💻', 'programming': '💻', 'frameworks': '🛠️', 'tools': '🔧',
+    'databases': '🗄️', 'cloud': '☁️', 'data': '📊', 'analytics': '📈',
+    'soft': '🤝', 'design': '🎨', 'devops': '⚙️', 'testing': '🧪',
+    'machine learning': '🤖', 'ai': '🤖', 'mobile': '📱', 'web': '🌐'
+  };
+  function getCatEmoji(cat) {
+    const low = cat.toLowerCase();
+    for (const [k,v] of Object.entries(catEmojis)) if (low.includes(k)) return v;
+    return '⚡';
+  }
+
+  body.innerHTML = entries.map(([cat, skills]) => `
+    <div class="skill-category">
+      <div class="skill-cat-name">${getCatEmoji(cat)} ${cat}</div>
+      <div class="skill-tags">
+        ${skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLinks(data) {
+  const grid = document.getElementById('links-grid');
+  const links = [
+    { platform: 'LinkedIn', icon: '💼', url: data.linkedin, color: '#0077B5' },
+    { platform: 'GitHub', icon: '🐙', url: data.github, color: '#6e40c9' },
+    { platform: 'Portfolio', icon: '🌐', url: data.portfolio, color: '#00E5FF' }
+  ];
+
+  const available = links.filter(l => l.url);
+
+  if (available.length === 0) {
+    grid.innerHTML = '<div class="link-empty">😶 No professional links found in the resume</div>';
+    return;
+  }
+
+  grid.innerHTML = available.map(l => `
+    <div class="link-item" onclick="window.open('${l.url}', '_blank')">
+      <div class="link-platform-icon">${l.icon}</div>
+      <div class="link-details">
+        <div class="link-platform">${l.platform.toUpperCase()}</div>
+        <div class="link-url">${l.url}</div>
+      </div>
+      <div class="link-arrow">↗</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════
+//  JSON SYNTAX HIGHLIGHT
+// ═══════════════════════════════════════
+function syntaxHighlight(json) {
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) return `<span class="json-key">${match}</span>`;
+      return `<span class="json-str">${match}</span>`;
+    }
+    if (/null/.test(match)) return `<span class="json-null">${match}</span>`;
+    return `<span class="json-num">${match}</span>`;
+  });
+}
+
+function toggleJson(btn) {
+  const body = document.getElementById('json-body');
+  const chevron = document.getElementById('json-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════
+//  RESET
+// ═══════════════════════════════════════
+function resetApp() {
+  selectedFile = null;
+  fileInput.value = '';
+  document.getElementById('file-info').classList.remove('visible');
+  document.getElementById('analyze-btn').classList.remove('visible');
+  dropZone.style.borderColor = '';
+  document.getElementById('results-section').classList.remove('visible');
+  document.getElementById('upload-section').style.display = '';
+  document.getElementById('hero-section').style.display = '';
+  // Reset contact fields
+  ['contact-email','contact-phone','contact-location'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════
+//  SAMPLE DATA (demo / fallback)
+// ═══════════════════════════════════════
+function getSampleData() {
+  return {
+    "name": "Zahid Salim Shaikh",
+    "email": "zahid.shaikh@example.com",
+    "phone": "+91 9876543210",
+    "location": "Mumbai",
+    "total_experience": 4,
+    "education": [
+      {
+        "institution": "University of Mumbai",
+        "degree": "B.E. Computer Engineering",
+        "start_year": "2016",
+        "end_year": "2020"
+      }
+    ],
+    "experience": [
+      {
+        "company": "TechCorp Pvt. Ltd.",
+        "position": "Senior Data Engineer",
+        "start_date": "Jan 2022",
+        "end_date": "Present",
+        "start_year": 2022,
+        "end_year": null
+      },
+      {
+        "company": "DataWave Solutions",
+        "position": "Data Analyst",
+        "start_date": "Jun 2020",
+        "end_date": "Dec 2021",
+        "start_year": 2020,
+        "end_year": 2021
+      }
+    ],
+    "skills": {
+      "Languages": ["Python", "SQL", "Bash", "Scala"],
+      "Frameworks & Tools": ["Apache Spark", "Airflow", "dbt", "Kafka"],
+      "Databases": ["PostgreSQL", "BigQuery", "Snowflake", "Redis"],
+      "Cloud & DevOps": ["AWS S3", "GCP", "Docker", "Git"],
+      "Analytics": ["Tableau", "Power BI", "Pandas", "NumPy"]
+    },
+    "github": "https://github.com/zahidshaikh",
+    "linkedin": "https://linkedin.com/in/zahid-shaikh",
+    "portfolio": null
+  };
+}
+</script>
+</body>
+</html>
