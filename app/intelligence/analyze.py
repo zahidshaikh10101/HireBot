@@ -90,7 +90,7 @@ def _call_openrouter(model: str, resume_text: str) -> Optional[dict]:
     Returns parsed dict on success, None on failure.
     Key is read fresh here so it always picks up the loaded .env value.
     """
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY environment variable not set")
 
@@ -170,7 +170,7 @@ def analyze_intelligence(resume_text: str) -> dict:
         ValueError: If API key is missing or text too short
         RuntimeError: If all models fail
     """
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
     if not api_key:
         raise ValueError(
             "OPENROUTER_API_KEY is not set.\n"
