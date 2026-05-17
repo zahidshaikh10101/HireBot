@@ -79,7 +79,7 @@ def _build_match_message(resume_text: str, jd_text: str) -> str:
 
 
 def _call_openrouter_match(model: str, resume_text: str, jd_text: str) -> Optional[dict]:
-    api_key = os.getenv("OPENROUTER_API_KEY", "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")
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY environment variable not set")
 
@@ -166,7 +166,7 @@ def analyze_match(resume_text: str, jd_text: str) -> dict:
         ValueError: Missing key / inputs too short
         RuntimeError: All models failed
     """
-    api_key = os.getenv("OPENROUTER_API_KEY", "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")
+    api_key = os.getenv("OPENROUTER_API_KEY", "")
     if not api_key:
         raise ValueError(
             "OPENROUTER_API_KEY is not set. "
