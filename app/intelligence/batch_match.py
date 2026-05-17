@@ -181,8 +181,8 @@ Rules:
 # ─── Core LLM call ──────────────────────────────────────────────────────────
 
 def _get_api_key(index: int = 0) -> str:
-    key1 = os.getenv("OPENROUTER_API_KEY", "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")
-    key2 = os.getenv("OPENROUTER_API_KEY_2", "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")
+    key1 = os.getenv("OPENROUTER_API_KEY", "")
+    key2 = os.getenv("OPENROUTER_API_KEY_2", "")
     if index % 2 == 1 and key2:
         return key2
     return key1
